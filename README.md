@@ -71,9 +71,6 @@ The MFRC522 sensor library provides an easy way of using MFRC522 sensor to read 
 ## Uploading sketch
 Finally, you can upload the full sketch to your ESP8266 (replace with your SSID, password and RPi IP address) which is in the arduino folder of the project
 
-4) Move the DHT folder to your Arduino IDE installation libraries folder
-
-5) Then, re-open your Arduino IDE
 
 ## Launching the Web Server
 Go to the root of the project folder and run this command
