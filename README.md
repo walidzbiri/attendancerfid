@@ -1,4 +1,4 @@
-# attendancerfid
+# Attendance using Rfid
 RFID attendance system realized using MFRC522,MOSQUITTO MQTT (On Raspberry PI) ,GREEN RED LEDS and ESP8266 
 
 
