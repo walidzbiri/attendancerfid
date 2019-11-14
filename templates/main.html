@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<head>
+   <title>RFID EnsaKénitra</title>
+   <!-- Latest compiled and minified CSS -->
+   <style>
+	   html {
+		   margin: 30px;
+	   }
+	   #aa {
+		   border: 13px gray solid;
+		   padding: 50px;
+		   margin-right: 600px;
+	   }
+	  #rfid {
+		  position: relative;
+		  float: top;
+		  margin: 250px;
+		  color: black;
+		  font: solid;
+	  }
+	  #al {
+		  position:absolute;
+		  opacity: 0.6;
+	  }
+	  
+	  
+   </style>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+   <!-- Optional theme -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+   <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+      	var socket = io.connect('http://' + document.domain + ':' + location.port);
+      	socket.on('connect', function() {
+          socket.emit('my event', {data: 'I\'m connected!'});
+      	});
+      	socket.on('uid', function(msg) {
+	  var nDate = new Date();
+          $('#readingsUpdated').text(nDate.getHours() + 'h:' + nDate.getMinutes() +
+             'm:' + nDate.getSeconds() + 's').html();
+			 var mssg="";
+			 for(var i=2;i<(msg.data.length-1);i++){
+			 	 mssg+=msg.data[i];
+			}
+          $('#uid').text(mssg).html();
+      	});
+      	socket.on('access', function(msg) {
+			var msg1="";
+			for(var i=2;i<(msg.data.length-1);i++){
+			 	msg1+=msg.data[i];
+			}
+	      const Url0='/esp8266/0/';
+          const Url2='/esp8266/2/';
+	  if(msg1=="0"){
+		$.ajax({
+		  url:Url0+"1",
+		  type:"GET",
+		  success: function(result){
+		  console.log(result);
+		  document.getElementById("aa").style.borderColor = "red";
+		  setTimeout(()=>{document.getElementById("aa").style.borderColor = "gray";$('#uid').text("").html();},2500);
+		  
+
+
+		},
+		error:function(error){
+		  console.log("Error :"+error);
+
+		}
+		});
+		$.ajax({
+		  url:Url2+"0",
+		  type:"GET",
+		  success: function(result){
+		  console.log(result);
+		  document.getElementById("aa").style.borderColor = "red";
+		  setTimeout(()=>{document.getElementById("aa").style.borderColor = "gray";$('#uid').text("").html();},2500);
+
+		},
+		error:function(error){
+		  console.log("Error :"+error);
+
+		}
+		});
+	  }
+	  else if(msg1=="1"){
+	    $.ajax({
+		  url:Url0+"0",
+		  type:"GET",
+		  success: function(result){
+		  console.log(result);
+		  document.getElementById("aa").style.borderColor = "green";
+		  setTimeout(()=>{document.getElementById("aa").style.borderColor = "gray";$('#uid').text("").html();},2500);
+		},
+		error:function(error){
+		  console.log("Error :"+error);
+		}
+		});
+		$.ajax({
+		  url:Url2+"1",
+		  type:"GET",
+		  success: function(result){
+		  console.log(result);
+		  document.getElementById("aa").style.borderColor = "green";
+		  setTimeout(()=>{document.getElementById("aa").style.borderColor = "gray";$('#uid').text("").html();},2500);
+		},
+		error:function(error){
+		  console.log("Error :"+error);
+		}
+		});
+	  }
+      	});
+      });
+   </script>
+</head>
+
+<body class="bg-light">
+	<div class="container">
+   		<div id="al" >
+	   		<img src="/static/ensa.jpg" height="500px" width="105%">
+   		</div>
+   <h1 id="rfid">RFID Web Server - ESP8266 MQTT</h1>
+   <h3>Time (updated <span id="readingsUpdated"></span>)</h3>
+   <div id="aa">
+   		<h3>UID: <span id="uid"></span></h3>
+   </div>
+   <h3  class="text-center  bg-dark rounded my-2 text-success">Our Team Members</h3>
+        <div class="row mb-2 ml-5">
+            <div class="col-md-3  mt-2"><img src="/static/essemlali.jpg"  id="led" height="100 px" width="120 px" class="img-fluid  ml-4" alt="Essemlali">
+              <h5>Essemlali Oussama</h5>
+            </div>
+            <div class="col-md-3  mt-2"><img src="/static/a.jpg"  id="led" height="100 px" width="120 px" class="img-fluid  ml-4" alt="Alae">
+              <h5>Joudari Alaeddine</h5>
+            </div>            <div class="col-md-3  mt-2"><img src="/static/zbiri.jpg"  id="led" height="100 px" width="120 px" class="img-fluid  ml-4" alt="Walid">
+              <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Walid Zbiri</h5>
+            </div>            <div class="col-md-3  mt-2"><img src="/static/jaafar.jpg"  id="led" height="100 px" width="120 px" class="img-fluid  ml-4" alt="Jaafar">
+              <h5>Jaafar Ouadoudi</h5>
+            </div>
+        </div>
+   </div>
+   
+</body>
+</html>
